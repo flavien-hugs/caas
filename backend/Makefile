@@ -86,14 +86,14 @@ coverage: ## Afficher le rapport de coverage
 
 # Code Quality
 .PHONY: lint
-lint: ## Lancer le linting (ruff)
-	poetry run ruff check src tests
-	poetry run ruff format --check src tests
+lint: ## Lancer le linting (ruff) — même périmètre que la CI/pre-commit
+	poetry run ruff check .
+	poetry run ruff format --check .
 
 .PHONY: format
 format: ## Formater le code automatiquement (ruff)
-	poetry run ruff check --fix src tests
-	poetry run ruff format src tests
+	poetry run ruff check --fix .
+	poetry run ruff format .
 
 .PHONY: clean
 clean: ## Nettoyer les fichiers générés

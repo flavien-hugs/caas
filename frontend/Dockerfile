@@ -18,7 +18,10 @@ RUN pnpm build
 # --- Dépendances de production uniquement -----------------------------------
 FROM base AS prod-deps
 COPY package.json pnpm-lock.yaml ./
-RUN pnpm install --prod --frozen-lockfile
+# --ignore-scripts : ce stage ne produit que les node_modules runtime. Le
+# script ``prepare`` (svelte-kit sync) dépend d'une devDependency absente en
+# --prod et ferait échouer l'install ; le build réel se fait au stage `build`.
+RUN pnpm install --prod --frozen-lockfile --ignore-scripts
 
 # --- Image finale -----------------------------------------------------------
 FROM node:22-alpine AS runtime

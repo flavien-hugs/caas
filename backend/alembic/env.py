@@ -1,10 +1,11 @@
 from logging.config import fileConfig
 
-from alembic import context
 from sqlalchemy import create_engine, pool
 from sqlmodel import SQLModel
 
+from alembic import context
 from src.infrastructure.config.settings import settings
+
 # Import the whole models module so every SQLModel table class registers
 # itself on SQLModel.metadata (TransactionRow, FeedbackRow, UserRow, …).
 # Importing a single class wouldn't be enough — autogenerate would silently

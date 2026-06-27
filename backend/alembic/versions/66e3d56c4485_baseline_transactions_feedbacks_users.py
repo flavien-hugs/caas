@@ -1,7 +1,7 @@
 """baseline: transactions, feedbacks, users
 
 Revision ID: 66e3d56c4485
-Revises: 
+Revises:
 Create Date: 2026-06-16 12:47:06.760790
 
 """
