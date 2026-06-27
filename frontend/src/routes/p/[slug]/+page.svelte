@@ -1,6 +1,5 @@
 <script lang="ts">
   import { getBlockDef } from '$blocks/registry';
-  import type { BlockType } from '$blocks/types';
 
   let { data, form } = $props();
 </script>

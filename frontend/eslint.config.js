@@ -27,9 +27,19 @@ export default ts.config(
       // (see ``$lib/markdown``) before it reaches ``{@html}``, so this rule
       // would only produce false positives here.
       'svelte/no-at-html-tags': 'off',
-      // Surface Svelte compiler warnings without failing the build on the
-      // pre-existing UI primitives that spread ``$props()``.
+      // Surface Svelte compiler warnings (svelte-check stays the canonical
+      // compile check; this is a secondary signal in eslint).
       'svelte/valid-compile': 'warn'
+    }
+  },
+  {
+    // UI primitives forward arbitrary HTML attributes via ``...rest`` in
+    // ``$props()`` — intentional, and these are never compiled as custom
+    // elements, so the ``custom_element_props_identifier`` warning is a false
+    // positive here. svelte-check still validates them.
+    files: ['src/lib/components/ui/**/*.svelte'],
+    rules: {
+      'svelte/valid-compile': 'off'
     }
   },
   {

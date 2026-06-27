@@ -180,12 +180,7 @@
         <p class="text-muted-foreground px-2 text-xs">{data.user?.role}</p>
       {/if}
 
-      <form
-        method="POST"
-        action="/logout"
-        use:enhance
-        class={cn('mt-2', collapsed ? '' : 'px-2')}
-      >
+      <form method="POST" action="/logout" use:enhance class={cn('mt-2', collapsed ? '' : 'px-2')}>
         <button
           type="submit"
           title={collapsed ? `Se déconnecter (${data.user?.username})` : undefined}

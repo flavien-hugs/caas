@@ -202,4 +202,3 @@ playwright/.cache
 **/*.log
 .impeccable
 backend/.env
-backend/**.lock

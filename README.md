@@ -1,7 +1,7 @@
 # CaaS — Checkout-as-a-Service
 
 [![FastAPI](https://img.shields.io/badge/FastAPI-0.128+-009688)](https://fastapi.tiangolo.com/)
-[![Python](https://img.shields.io/badge/Python-3.14+-3776AB)](https://www.python.org/)
+[![Python](https://img.shields.io/badge/Python-3.12+-3776AB)](https://www.python.org/)
 [![PostgreSQL](https://img.shields.io/badge/PostgreSQL-async-336791)](https://www.postgresql.org/)
 [![SvelteKit](https://img.shields.io/badge/Frontend-SvelteKit%202%20%2F%20Svelte%205-FF3E00)](https://kit.svelte.dev/)
 [![Tests](https://img.shields.io/badge/backend%20tests-84%20passing-success)]()
@@ -64,7 +64,7 @@ pnpm dev                                                    # http://localhost:5
 | Couche | Backend | Frontend |
 |---|---|---|
 | HTTP | FastAPI 0.128+ | SvelteKit 2 (adapter-node), SSR |
-| Langage | Python 3.14 | TypeScript 5 / Svelte 5 (runes) |
+| Langage | Python 3.12+ | TypeScript 5 / Svelte 5 (runes) |
 | Données | SQLModel (Postgres asyncpg / SQLite aiosqlite en test) | client `openapi-fetch` typé via `openapi-typescript` |
 | Migrations | Alembic | — |
 | UI | — | Tailwind 4, bits-ui, lucide-svelte, superforms + zod |

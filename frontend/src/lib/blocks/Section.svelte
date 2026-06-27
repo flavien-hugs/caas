@@ -1,6 +1,6 @@
 <script lang="ts">
   import { getBlockDef } from './registry';
-  import type { Block, BlockType, SectionProps } from './types';
+  import type { Block, SectionProps } from './types';
 
   interface Props {
     props: SectionProps;
@@ -62,7 +62,7 @@
           Colonne {ci + 1} vide — glisse un bloc ici.
         </div>
       {/if}
-      {#each column as child, bi (child.id)}
+      {#each column as child (child.id)}
         {@const def = getBlockDef(child.type)}
         {#if def}
           {@const Component = def.component}
