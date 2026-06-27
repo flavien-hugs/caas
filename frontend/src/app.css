@@ -1,0 +1,47 @@
+@import 'tailwindcss';
+@plugin '@tailwindcss/typography';
+@plugin '@tailwindcss/forms';
+
+/**
+ * Design tokens, mapped onto Tailwind's CSS variables so shadcn-svelte
+ * primitives find them. Keep colors in HSL for easy theming.
+ */
+@theme {
+  /* Orange / Ambre identity. Primary = orange-600 (good contrast with white
+   * for buttons), accent + neutrals warmed toward ~30° so the whole UI reads
+   * warm instead of the old cool navy/grey. */
+  --color-background: hsl(0 0% 100%);
+  --color-foreground: hsl(24 20% 14%);
+  --color-card: hsl(0 0% 100%);
+  --color-card-foreground: hsl(24 20% 14%);
+  --color-popover: hsl(0 0% 100%);
+  --color-popover-foreground: hsl(24 20% 14%);
+  --color-primary: hsl(21 90% 48%);
+  --color-primary-foreground: hsl(0 0% 100%);
+  --color-secondary: hsl(33 50% 96%);
+  --color-secondary-foreground: hsl(24 30% 18%);
+  --color-muted: hsl(33 40% 96%);
+  --color-muted-foreground: hsl(25 12% 45%);
+  --color-accent: hsl(36 100% 94%);
+  --color-accent-foreground: hsl(24 80% 32%);
+  --color-destructive: hsl(0 84% 60%);
+  --color-destructive-foreground: hsl(0 0% 100%);
+  --color-border: hsl(32 28% 90%);
+  --color-input: hsl(32 28% 90%);
+  --color-ring: hsl(21 90% 48%);
+
+  /* Amber for highlights / brand gradient endpoints. */
+  --color-brand-amber: hsl(38 92% 50%);
+  --color-brand-orange: hsl(21 90% 48%);
+
+  --radius: 0.5rem;
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground antialiased;
+  }
+}

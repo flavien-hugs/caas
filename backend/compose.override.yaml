@@ -1,0 +1,103 @@
+# Dev compose for the CaaS backend stack. Anchors factor out the bits shared
+# between several services (logging, defaults, the Python-app base config),
+# resource limits keep the host healthy when many stacks run side-by-side.
+
+x-logging: &logging
+  driver: "json-file"
+  options:
+    max-size: "10m"
+    max-file: "3"
+
+x-defaults: &defaults
+  restart: unless-stopped
+  logging: *logging
+
+# Python application tier (FastAPI + reconciliation loop). 512m gives headroom
+# for live-reload + the SQLAlchemy / Pydantic compile cost on cold start.
+x-app-resources: &app-resources
+  mem_limit: 512m
+  cpus: "0.5"
+
+# Lightweight sidecars (Redis cache, Adminer UI).
+x-lite-resources: &lite-resources
+  mem_limit: 256m
+  cpus: "0.25"
+
+# Shared base for the Python services: same image, same bind mount for hot
+# reload, same dependency wait. Long-form depends_on with service_healthy
+# guarantees the API doesn't try to query Postgres before pg_isready passes.
+x-python-app: &python-app
+  build: .
+  volumes:
+    - ./src:/app/src
+  depends_on:
+    db:
+      condition: service_healthy
+    redis:
+      condition: service_started
+
+services:
+  api:
+    <<: [ *defaults, *app-resources, *python-app ]
+    container_name: caas-api
+    ports:
+      - "${API_PORT:-8080}:8080"
+
+  sync-worker:
+    <<: [ *defaults, *app-resources, *python-app ]
+    container_name: caas-sync-worker
+    command: >
+      poetry run caas sync-pending-loop --book-id lutte-contre-fraude
+
+  migrate:
+    <<: [ *defaults, *app-resources, *python-app ]
+    container_name: caas-migrate
+    command: poetry run alembic upgrade head
+    restart: "no"
+    volumes:
+      - ./src:/app/src
+      - ./alembic:/app/alembic
+      - ./alembic.ini:/app/alembic.ini
+    depends_on:
+      db:
+        condition: service_healthy
+    profiles:
+      - migrate
+
+  redis:
+    <<: [ *defaults, *lite-resources ]
+    image: redis:7.4-alpine
+    container_name: caas-redis
+    ports:
+      - "${REDIS_PORT:-6379}:6379"
+
+  db:
+    <<: [ *defaults, *app-resources ]
+    image: postgres:14.2-alpine
+    container_name: caas-db
+    environment:
+      - POSTGRES_USER=${POSTGRES_USER:-postgres}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-postgres}
+      - POSTGRES_DB=${POSTGRES_DB:-caas}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "${POSTGRES_PORT:-5432}:5432"
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-postgres} -d ${POSTGRES_DB:-caas}" ]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+      start_period: 10s
+
+  adminer:
+    <<: [ *defaults, *lite-resources ]
+    image: adminer:standalone
+    container_name: caas-adminer
+    ports:
+      - "${ADMINER_PORT:-8081}:8080"
+    depends_on:
+      - db
+
+volumes:
+  postgres_data:

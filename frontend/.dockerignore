@@ -1,0 +1,15 @@
+node_modules
+build
+.svelte-kit
+.env
+.env.*
+!.env.example
+.git
+.gitignore
+.idea
+.vscode
+*.log
+coverage
+test-results
+playwright-report
+playwright/.cache

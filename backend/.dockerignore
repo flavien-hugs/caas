@@ -1,0 +1,14 @@
+__pycache__
+*$py.class
+.venv
+venv
+ENV
+.env
+.idea
+.vscode
+.git
+.gitignore
+*.log
+.python-version
+compose.override.yaml
+docs/*.md

@@ -1,0 +1,19 @@
+# Artefacts de build / généré
+build
+dist
+.svelte-kit
+src/lib/api/schema.gen.ts
+
+# Lockfiles
+pnpm-lock.yaml
+package-lock.json
+
+# Sorties de tests
+coverage
+test-results
+playwright-report
+
+# Env
+.env
+.env.*
+!.env.example
