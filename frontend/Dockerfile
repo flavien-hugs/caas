@@ -11,7 +11,10 @@ WORKDIR /app
 # --- Dépendances complètes + build ------------------------------------------
 FROM base AS build
 COPY package.json pnpm-lock.yaml ./
-RUN pnpm install --frozen-lockfile
+# --ignore-scripts : le hook ``prepare`` (svelte-kit sync) tourne avant le
+# COPY des sources et casse l'install ; ``pnpm build`` lance lui-même la sync
+# (plugin SvelteKit de Vite) une fois les sources copiées.
+RUN pnpm install --frozen-lockfile --ignore-scripts
 COPY . .
 RUN pnpm build
 
